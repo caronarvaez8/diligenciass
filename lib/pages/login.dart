@@ -1,5 +1,6 @@
 import 'package:diligencias/colors.dart';
 import 'package:diligencias/models/user.dart';
+import 'package:diligencias/pages/connection.dart';
 import 'package:diligencias/pages/home.dart';
 import 'package:diligencias/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,8 +13,8 @@ import '../provider/user_notifier.dart';
 
 String url1 = "https://www.su-web.net/controladores/funcionesUsuarios.php";
 
-late SharedPreferences sharedPreferences;
-late bool checkValue = false;
+
+
 
 class Login extends StatefulWidget {
   @override
@@ -178,7 +179,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             margin: EdgeInsets.only(top: (heightApp * 0.0002)),
                             child: CheckboxListTile(
                               value: checkValue,
-                              title: new Text(
+                              title: const Text(
                                 "Recordar usuario",
                                 style: TextStyle(
                                     fontFamily: "OpenSans"),

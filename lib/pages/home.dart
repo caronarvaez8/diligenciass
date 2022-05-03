@@ -1,4 +1,10 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:diligencias/main.dart';
 import 'package:diligencias/models/user.dart';
+import 'package:diligencias/pages/connection.dart';
 import 'package:diligencias/pages/login.dart';
 import 'package:diligencias/pages/user_list.dart';
 import 'package:diligencias/provider/user_notifier.dart';
@@ -8,15 +14,45 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../colors.dart';
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 class _HomeState extends State<Home> with TickerProviderStateMixin {
+
+  Map _source = {ConnectivityResult.none: false};
+  final MyConnectivity _connectivity = MyConnectivity.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+    });
+  }
+
+
+  @override
+  void dispose() {
+    _connectivity.disposeStream();
+    super.dispose();
+  }
   List<User> userList = [];
   @override
   Widget build(BuildContext context) {
+    bool string;
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.mobile:
+        string = true;
+        break;
+      case ConnectivityResult.wifi:
+        string = true;
+        break;
+      case ConnectivityResult.none:
+      default:
+        string = false;
+    }
     UserNotifier userNotifier = Provider.of<UserNotifier>(context);
     return Scaffold(
       drawer: Drawer(
@@ -35,7 +71,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 alignment: Alignment.centerRight,
                                 fit: BoxFit.fitWidth),
                           ),
-                        ))
+                        )),
+
                   ])
             ]),
             ListTile(
@@ -91,7 +128,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               fontFamily: "Roboto"),
         ),
         centerTitle: true,
-        actions: [Builder(
+        actions: [
+          Stack(
+            fit: StackFit.loose,
+      children: [
+        Builder(
             builder: (context) => IconButton(
                 iconSize: 80,
                 icon: CircleAvatar(
@@ -102,20 +143,64 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       child: Image.asset(imageReferences.user),
                     )),
                 onPressed: () =>{
-
+                  HomePage(),
                   Scaffold.of(context).openDrawer(),
                 }
             )),
+        Align(
+
+          alignment: Alignment.bottomRight,
+          child: Container(
+            margin: new EdgeInsets.all(12.0),
+            //color: Colors.blue,
+            alignment: Alignment.bottomRight,
+            decoration: BoxDecoration(
+                color: string == true ? Colors.green : Colors.red,
+                borderRadius: const BorderRadius.all(Radius.circular(30))),
+            height: 20,
+            width: 20,
+          ),),
+
+        ],)
         ],
       ),
       body: SingleChildScrollView(
           child: Column(
-            children: <Widget>[Container(
-                color: const Color(0xFF4F5C70),
-                padding: const EdgeInsets.only(left:0, bottom: 0, right: 0, top: 0),
-                child: UserList()
-            ),],
+            children: <Widget>[
+
+            ],
           )),
     );
   }
+}
+
+class MyConnectivity {
+  MyConnectivity._();
+
+  static final _instance = MyConnectivity._();
+  static MyConnectivity get instance => _instance;
+  final _connectivity = Connectivity();
+  final _controller = StreamController.broadcast();
+  Stream get myStream => _controller.stream;
+
+  void initialise() async {
+    ConnectivityResult result = await _connectivity.checkConnectivity();
+    _checkStatus(result);
+    _connectivity.onConnectivityChanged.listen((result) {
+      _checkStatus(result);
+    });
+  }
+
+  void _checkStatus(ConnectivityResult result) async {
+    bool isOnline = false;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      isOnline = false;
+    }
+    _controller.sink.add({result: isOnline});
+  }
+
+  void disposeStream() => _controller.close();
 }
