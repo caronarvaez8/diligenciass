@@ -14,6 +14,7 @@ class User {
   String? nombreSeccion;
   String? taquilla;
   String? oidUbicacion;
+  String? msgError;
 
   User(
       {this.oidUsuario,
@@ -30,7 +31,8 @@ class User {
         this.nombreOficina,
         this.nombreSeccion,
         this.taquilla,
-        this.oidUbicacion
+        this.oidUbicacion,
+        this.msgError
       });
 
   Map<String, dynamic> toMap() => {
@@ -48,7 +50,8 @@ class User {
     'nombreOficina': nombreOficina,
     'nombreSeccion': nombreSeccion,
     'taquilla': taquilla,
-    'oidUbicacion': oidUbicacion
+    'oidUbicacion': oidUbicacion,
+    'msgError': msgError
   };
 
   factory User.fromJson(Map<String, dynamic> map) {
@@ -67,7 +70,8 @@ class User {
         nombreCiudad: map['ubicacion']['nombreCiudad'],
         nombreOficina: map['ubicacion']['nombreOficina'],
         taquilla: map['ubicacion']['taquilla'],
-        oidUbicacion: map['ubicacion']['oidUbicacion']
+        oidUbicacion: map['ubicacion']['oidUbicacion'],
+        msgError: map['ubicacion']['msgError']
 
     );
 

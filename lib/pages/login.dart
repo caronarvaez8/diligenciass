@@ -1,3 +1,5 @@
+
+
 import 'package:diligencias/colors.dart';
 import 'package:diligencias/models/user.dart';
 import 'package:diligencias/pages/connection.dart';
@@ -38,6 +40,123 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     });
   }
 
+
+
+  Future<List> login() async {
+  //  List<User> user = [];
+    var aux;
+    try {
+      var uri = await http.post(Uri.parse(url1), body: {
+        'funcionphp': 'tomarDatosUbicacion',
+        'textoClave': '${controllerCont.text}',
+        'idTercero': '${controllerUser.text}',
+        'dispositivo': 'app'
+      });
+
+      aux = json.decode(uri.body);
+        //aux = User.fromJson(decoded);
+        //user.add(aux);
+      //print("estooooooo ${aux['msgError']}");
+      if (aux['msgError']==null) {
+        print("youuuuuuu ${aux['msgError']}");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      }
+        else if (aux['msgError']=='La clave digitada no coincide con la registrada' || aux['msgError'] =='Error al tratar de validar la clave' ){
+          print("dialogooooooo");
+          setState(() {
+            showDialog(
+                context: context,
+                builder: (_) => Dialog(
+                    insetPadding: EdgeInsets.all(10),
+                    child: SingleChildScrollView(
+                        child: Stack(
+                            overflow: Overflow.visible,
+                            alignment: Alignment.center,
+                            children: <Widget>[
+                              Container(
+                                  width: double.infinity,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(60),),
+
+                                  padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                                  child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child:
+                                            Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    alignment: Alignment.centerRight,
+                                                    width: 150.0, height: 50.0,
+                                                    decoration:  BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(imageReferences.iconLogistica),
+                                                          alignment: Alignment.centerRight,
+                                                          fit: BoxFit.fitWidth),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                      alignment:Alignment.center,
+                                                      child: const Padding(padding: EdgeInsets.only( top: 20,bottom: 5),
+                                                        child: Text('No se puede loguear',
+                                                          textAlign:TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              fontWeight: FontWeight.w800,
+                                                              fontFamily: "OpenSans_SemiBold"),
+                                                        ),
+                                                      )
+                                                  ),
+                                                  Container(
+                                                      alignment:Alignment.centerLeft,
+                                                      child: const Padding(padding: EdgeInsets.only( top:10,bottom: 5),
+                                                        child: Text('El usuario o la contraseña digitada no coincide con los datos registrada',
+                                                          textAlign:TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontFamily: "OpenSans_SemiBold"),
+                                                        ),
+                                                      )
+                                                  ),
+                                                  Container(
+                                                    alignment:Alignment.bottomRight,
+                                                    padding: EdgeInsets.only( top: 25,bottom: 5),
+                                                    child: MaterialButton(
+                                                      minWidth: 100.0,
+                                                      height: 40.0,
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
+                                                      color: Color(0xffffd629),
+                                                      child: const Text('Entiendo',
+                                                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
+                                                    ),
+                                                  )
+                                                ]),
+
+                                            )
+                                      ])
+                              ),
+                            ])
+                    )
+                )
+            );
+          });
+      }
+
+      return aux;
+    } catch (e) {
+
+      return Future.error(e);
+
+    }
+
+  }
   Widget build(BuildContext context) {
     UserNotifier userNotifier = Provider.of<UserNotifier>(context);
     double widthApp = MediaQuery.of(context).size.width;
@@ -157,13 +276,93 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                               fontWeight: FontWeight.w600),
                                         ),
                                         onPressed: () {
-                                          servicio1();
-                                          userNotifier.listUser();
-                                          //userNotifier.listUserDB();
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => Home(),
-                                              ));
+                                          if(controllerUser.text.isNotEmpty == false || controllerCont.text.isNotEmpty == false){
+                                            setState(() {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) => Dialog(
+                                                      insetPadding: EdgeInsets.all(10),
+                                                      child: SingleChildScrollView(
+                                                          child: Stack(
+                                                              overflow: Overflow.visible,
+                                                              alignment: Alignment.center,
+                                                              children: <Widget>[
+                                                                Container(
+                                                                    width: double.infinity,
+                                                                    height: 300,
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(30),),
+                                                                    padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                                                                    child: Row(
+                                                                        children: <Widget>[
+                                                                          Expanded(
+                                                                            child:
+                                                                            Column(
+                                                                                children: <Widget>[
+                                                                                  Container(
+                                                                                    alignment: Alignment.centerRight,
+                                                                                    width: 150.0, height: 50.0,
+                                                                                    decoration:  BoxDecoration(
+                                                                                      image: DecorationImage(
+                                                                                          image: AssetImage(imageReferences.iconLogistica),
+                                                                                          alignment: Alignment.centerRight,
+                                                                                          fit: BoxFit.fitWidth),
+                                                                                    ),
+                                                                                  ),
+                                                                                  Container(
+                                                                                      alignment:Alignment.center,
+                                                                                      child: const Padding(padding: EdgeInsets.only( top: 20,bottom: 5),
+                                                                                        child: Text('No se puede loguear',
+                                                                                          textAlign:TextAlign.center,
+                                                                                          style: TextStyle(
+                                                                                              fontSize: 20,
+                                                                                              fontWeight: FontWeight.w800,
+                                                                                              fontFamily: "OpenSans_SemiBold"),
+                                                                                        ),
+                                                                                      )
+                                                                                  ),
+                                                                                  Container(
+                                                                                      alignment:Alignment.centerLeft,
+                                                                                      child: const Padding(padding: EdgeInsets.only( top:10,bottom: 5),
+                                                                                        child: Text('El usuario o la contraseña están vacios',
+                                                                                          textAlign:TextAlign.center,
+                                                                                          style: TextStyle(
+                                                                                              fontSize: 16,
+                                                                                              fontFamily: "OpenSans_SemiBold"),
+                                                                                        ),
+                                                                                      )
+                                                                                  ),
+                                                                                  Container(
+                                                                                    alignment:Alignment.bottomRight,
+                                                                                    padding: EdgeInsets.only( top: 25,bottom: 5),
+                                                                                    child: MaterialButton(
+                                                                                      minWidth: 100.0,
+                                                                                      height: 40.0,
+                                                                                      onPressed: () {
+                                                                                        Navigator.pop(context);
+                                                                                      },
+                                                                                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
+                                                                                      color: Color(0xffffd629),
+                                                                                      child: const Text('Entiendo',
+                                                                                          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800)),
+                                                                                    ),
+                                                                                  )
+                                                                                ]),
+
+                                                                          )
+                                                                        ])
+                                                                ),
+                                                              ])
+                                                      )
+                                                  )
+                                              );
+                                            });
+                                          }else {
+                                            login();
+                                            servicio1();
+                                            userNotifier.listUser();
+
+                                          }
                                         },
                                         color: colorOne,
                                         textColor: Colors.white,
@@ -250,13 +449,13 @@ Future<List<User>> servicio1() async {
     if (uri.statusCode == 200) {
       Map<String, dynamic> decoded = Map<String, dynamic>.from(jsonDecode(uri.body));
       User aux = User.fromJson(decoded);
-      print("valores: ${decoded}");
+      //print("valores: ${decoded}");
       user.add(aux);
       print("holaaaaaa ${aux.toMap().toString()}");
 
       return user;
     } else {
-      return Future.error("error este");
+      return Future.error("error este user");
     }
   } catch (e) {
     return Future.error(e);
