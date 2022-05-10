@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:diligencias/models/user.dart';
 import 'package:diligencias/pages/connection.dart';
+import 'package:diligencias/pages/datos_list.dart';
 import 'package:diligencias/pages/login.dart';
 import 'package:diligencias/pages/user_list.dart';
 import 'package:diligencias/provider/user_notifier.dart';
@@ -144,7 +145,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 }
             )),
         Align(
-
           alignment: Alignment.bottomRight,
           child: Container(
             margin: new EdgeInsets.all(12.0),
@@ -163,7 +163,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: DatosList(),
+                  )
+                ],
+              )
             ],
           )),
     );

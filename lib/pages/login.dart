@@ -3,7 +3,9 @@
 import 'package:diligencias/colors.dart';
 import 'package:diligencias/models/user.dart';
 import 'package:diligencias/pages/connection.dart';
+import 'package:diligencias/pages/datos_list.dart';
 import 'package:diligencias/pages/home.dart';
+import 'package:diligencias/provider/datos_notifier.dart';
 import 'package:diligencias/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +16,6 @@ import 'dart:convert';
 import '../provider/user_notifier.dart';
 
 String url1 = "https://www.su-web.net/controladores/funcionesUsuarios.php";
-
-
-
-
 class Login extends StatefulWidget {
   @override
 
@@ -159,6 +157,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
   Widget build(BuildContext context) {
     UserNotifier userNotifier = Provider.of<UserNotifier>(context);
+    DatosNotifier datosNotifier = Provider.of<DatosNotifier>(context);
     double widthApp = MediaQuery.of(context).size.width;
     double heightApp = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -360,6 +359,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                           }else {
                                             login();
                                             servicio1();
+                                            servicioDatos();
+                                            datosNotifier.listDatos();
                                             userNotifier.listUser();
 
                                           }
@@ -462,3 +463,4 @@ Future<List<User>> servicio1() async {
   }
 
 }
+

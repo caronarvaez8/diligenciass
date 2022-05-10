@@ -13,8 +13,8 @@ class UserNotifier with ChangeNotifier {
 
   UnmodifiableListView<User> get userList => UnmodifiableListView(_userList);
 
-  addUser(User movie) {
-    _userList.add(movie);
+  addUser(User user) {
+    _userList.add(user);
     notifyListeners();
   }
 
