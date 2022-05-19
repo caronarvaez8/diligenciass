@@ -1,12 +1,15 @@
 import 'package:diligencias/models/datos.dart';
+import 'package:diligencias/models/task_details.dart';
+import 'package:diligencias/pages/taks.dart';
 import 'package:diligencias/provider/datos_notifier.dart';
+import 'package:diligencias/provider/task_details_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'home.dart';
+import 'package:provider/provider.dart';
 
 String url2 = "https://www.su-web.net/controladores/funcionesGestioncci.php";
 
@@ -20,6 +23,7 @@ class TaskDetalisList extends StatefulWidget {
 class _TaskDetalisListState extends State<TaskDetalisList> {
 
   Widget build(BuildContext context) {
+    TaskDetailsNotifier taskdetails = Provider.of<TaskDetailsNotifier>(context);
     double widthApp = MediaQuery.of(context).size.width;
     double heightApp = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -53,7 +57,7 @@ class _TaskDetalisListState extends State<TaskDetalisList> {
                       ]),
 
               ),
-              SizedBox(height: 50,),
+              SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -63,17 +67,17 @@ class _TaskDetalisListState extends State<TaskDetalisList> {
                            child: Column(
                              children: [
                                Container(
-                                 margin: EdgeInsets.all(5),
+                                 margin: EdgeInsets.all(3),
                                  child: const Image(
-                                   image: AssetImage('assets/images/enviar.png'),
-                                   color: Colors.black26,
+                                   image: AssetImage('assets/images/truck.png'),
+                                   color: Colors.red,
                                    fit: BoxFit.contain,
                                    height: 30,
                                    width: 30,
                                  ),
                                ),
                                Container(
-                                 margin: EdgeInsets.all(5),
+                                 margin: EdgeInsets.all(3),
                                  child: const Text(
                                      "Destinatario",
                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
@@ -94,17 +98,11 @@ class _TaskDetalisListState extends State<TaskDetalisList> {
                      Column(
                        children: [
                          Container(
-                           margin: EdgeInsets.all(5),
-                           child: const Image(
-                             image: AssetImage('assets/images/enviar.png'),
-                             color: Colors.black26,
-                             fit: BoxFit.contain,
-                             height: 30,
-                             width: 30,
-                           ),
+                           margin: EdgeInsets.all(3),
+                           child: Icon(Icons.person, color: Colors.green, size: 35,),
                          ),
                          Container(
-                           margin: EdgeInsets.all(5),
+                           margin: EdgeInsets.all(3),
                            child: const Text(
                                "Remitente",
                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)
@@ -113,7 +111,20 @@ class _TaskDetalisListState extends State<TaskDetalisList> {
                        ],
                      )
               ],),
-              const SizedBox(height: 250,),
+
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20.0),
+                  height: 200.0,
+
+                  child:  Row(
+                            children: [
+                              Expanded(
+                                child: TaskDetaList(),
+                              )
+                            ],
+                          )
+              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -186,8 +197,8 @@ class _TaskDetalisListState extends State<TaskDetalisList> {
                             ],
 
                   ),
-                  const SizedBox(height: 20,),
-                  Column(
+                        const SizedBox(height: 20,),
+                        Column(
                             children: [
                               Container(
                                 margin: EdgeInsets.only(top: 5),
@@ -229,13 +240,13 @@ class _TaskDetalisListState extends State<TaskDetalisList> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(5),
-                              child: Icon(Icons.ac_unit, color: Colors.white),
+                              child: Icon(Icons.check, color: Colors.white, size: 25),
 
                             ),
                             Container(
                               margin: EdgeInsets.all(5),
                               child: const Text(
-                                "Envia reporte",
+                                "Finalizar tarea",
                                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                               ),
 
@@ -277,25 +288,24 @@ class destinatario extends StatelessWidget {
 }
 
 
-Future<List<Datos>> servicioDatos() async {
-  List<Datos> datos = [];
+Future<List<TaskDetails>> servicioDatosTask() async {
+  List<TaskDetails> taskdetails = [];
   try {
     var uri = await http.post(Uri.parse(url2), body: {
-      'funcionphp': 'listarPendientes',
-      'datosForm': '{"oidMensajero": 66778, "optEstado" : "pdte"}',
+      'funcionphp': 'tomarDatos',
+      'idRegistro': '191370',
       'dispositivo': 'movil',
-      'usuario': '16773145',
-      'oidUsuario': "66778"
     });
     if (uri.statusCode == 200) {
       Map<String, dynamic> decoded = Map<String, dynamic>.from(jsonDecode(uri.body));
-      for (var i = 0; i < decoded['listaDiligencias'].length; i++) {
-        Datos aux = Datos.fromJson(decoded['listaDiligencias'][i]);
-        datos.add(aux);
-        print("holaaaaaa yooooooooo ${aux.toMap().toString()}");
-      }
-      return datos;
-    } else {
+      TaskDetails aux = TaskDetails.fromJson(decoded['infoRemite']);
+      print("valoresjj: ${decoded}");
+      print("valoresjj: ${decoded['infoDestino']}");
+      taskdetails.add(aux);
+      print("chaooooooooooo ${aux.toMap().toString()}");
+
+      return taskdetails;
+    }  else {
       return Future.error("error este user");
     }
   } catch (e) {

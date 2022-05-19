@@ -6,10 +6,8 @@ import 'package:diligencias/pages/connection.dart';
 import 'package:diligencias/pages/datos_list.dart';
 import 'package:diligencias/pages/login.dart';
 import 'package:diligencias/pages/user_list.dart';
-import 'package:diligencias/provider/user_notifier.dart';
 import 'package:diligencias/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Home extends StatefulWidget {
   @override
@@ -50,7 +48,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       default:
         string = false;
     }
-    UserNotifier userNotifier = Provider.of<UserNotifier>(context);
     return Scaffold(
       drawer: Drawer(
         backgroundColor: const Color(0xFF4F5C70),

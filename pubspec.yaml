@@ -68,6 +68,7 @@ flutter:
      - assets/images/user.png
      - assets/images/exit.png
      - assets/images/logo_sulogistica_blue.png
+     - assets/truck.png
      - assets/images/enviar.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

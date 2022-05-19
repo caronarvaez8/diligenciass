@@ -1,6 +1,7 @@
 import 'package:diligencias/models/datos.dart';
-import 'package:diligencias/pages/task_details.dart';
+import 'package:diligencias/pages/task_details_list.dart';
 import 'package:diligencias/provider/datos_notifier.dart';
+import 'package:diligencias/provider/task_details_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,7 @@ class _DatosListState extends State<DatosList> {
   Widget build(BuildContext context) {
     double widthApp = MediaQuery.of(context).size.width;
     DatosNotifier datosNotifier = Provider.of<DatosNotifier>(context);
+    TaskDetailsNotifier taskdetailsNotifier = Provider.of<TaskDetailsNotifier>(context);
 
     return  ListView.builder(
       scrollDirection: Axis.vertical,
@@ -36,6 +38,10 @@ class _DatosListState extends State<DatosList> {
         elevation: 3,
           child: InkWell(
             onTap: () async {
+              servicioDatosTask();
+              //datosNotifier.listDatos();
+              //taskdetailsNotifier.listDatosTaskDetailsListUltFecha();
+              taskdetailsNotifier.listDatosTaskDetailsList();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TaskDetalisList()),
@@ -53,7 +59,7 @@ class _DatosListState extends State<DatosList> {
                       Container(
                           padding: const EdgeInsets.only(top: 15),
                           child: GestureDetector(
-                              child: Image(
+                              child: const Image(
                                 image: AssetImage('assets/images/enviar.png'),
                                 color: Colors.black26,
                                 fit: BoxFit.contain,

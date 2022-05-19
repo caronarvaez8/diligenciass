@@ -1,15 +1,10 @@
-import 'package:diligencias/models/datos.dart';
 import 'package:diligencias/provider/user_notifier.dart';
 import 'package:diligencias/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'home.dart';
-
-String url2 = "https://www.su-web.net/controladores/funcionesGestioncci.php";
 
 class UserList extends StatefulWidget {
   @override

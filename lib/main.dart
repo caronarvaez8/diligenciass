@@ -1,7 +1,9 @@
 import 'package:diligencias/colors.dart';
 import 'package:diligencias/pages/home.dart';
 import 'package:diligencias/pages/login.dart';
+import 'package:diligencias/pages/task_details_list.dart';
 import 'package:diligencias/provider/datos_notifier.dart';
+import 'package:diligencias/provider/task_details_notifier.dart';
 import 'package:diligencias/provider/user_notifier.dart';
 import 'package:diligencias/utils.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => DatosNotifier()),
+      ChangeNotifierProvider<DatosNotifier>(create: (_) => DatosNotifier()),
       ListenableProvider(create: (context) => UserNotifier()),
+      ChangeNotifierProvider<TaskDetailsNotifier>( create: (context) => TaskDetailsNotifier()),
     ],
     child: MyApp(),
   ),);
