@@ -12,7 +12,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => DatosNotifier()),
-     Provider(create: (context) => UserNotifier()),
+      ListenableProvider(create: (context) => UserNotifier()),
     ],
     child: MyApp(),
   ),);

@@ -1,13 +1,12 @@
 import 'package:diligencias/models/datos.dart';
+import 'package:diligencias/pages/task_details.dart';
 import 'package:diligencias/provider/datos_notifier.dart';
-import 'package:diligencias/provider/user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'home.dart';
 
 String url2 = "https://www.su-web.net/controladores/funcionesGestioncci.php";
 
@@ -39,7 +38,7 @@ class _DatosListState extends State<DatosList> {
             onTap: () async {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Home()),
+                MaterialPageRoute(builder: (context) => TaskDetalisList()),
               );
              /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("El pdf está disponible en su directorio de descargas"),
@@ -52,23 +51,25 @@ class _DatosListState extends State<DatosList> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        color: Colors.blue,
+                          padding: const EdgeInsets.only(top: 15),
                           child: GestureDetector(
                               child: Image(
                                 image: AssetImage('assets/images/enviar.png'),
                                 color: Colors.black26,
                                 fit: BoxFit.contain,
-                                height: 50,
-                                width: 50,
-                              )
+                                height: 30,
+                                width: 30,
+                              ),
+
                           )
                       ),
                       SizedBox(height: 6),
                       Container(
+                          padding: const EdgeInsets.only(bottom: 15),
                           child: GestureDetector(
                               child: Text("ENVIAR",
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w800,
                                   color: Colors.black26
                               ),)
@@ -78,125 +79,66 @@ class _DatosListState extends State<DatosList> {
                   ),
                 ),
                 Expanded(
-                    child: Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                  color: Colors.blue,
-                   child: Row(
-                    children: [
-                      Consumer<DatosNotifier>(
-                        builder: (_, notifier, __) => const Text(
-                          "Número de radicado",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "OpenSans"),
+                        padding: const EdgeInsets.only(top: 15),
+                        child:  Consumer<DatosNotifier>(
+                          builder: (_, notifier, __) => Text(
+                            'Número radicado:',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "OpenSans"),
+                          ),
                         ),
-                      ),]),),
+                      ),
                       Container(
-                        margin: EdgeInsets.only(top: 4, bottom: 4),
-                        color: Colors.blue,
-                        child: Row(
-                            children: [
-                              Consumer<DatosNotifier>(
-                                builder: (_, notifier, __) => Text(
-                                  '${notifier.datosList[index].oid}',
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "OpenSans"),
-                                ),
-                              ),]),),
-                      Container(
-                        margin: EdgeInsets.only(top: 4, bottom: 4),
-                        color: Colors.blue,
-                        child: Row(
-                            children: [
-                              Consumer<DatosNotifier>(
-                                builder: (_, notifier, __) => Text(
-                                  '${notifier.datosList[index].direccion}',
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "OpenSans"),
-                                ),
-                              ),]),),
-
-        Row(
-          children: [
-                      Consumer<DatosNotifier>(
-                        builder: (_, notifier, __) => const Text(
-                          "Identificación:",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "OpenSans"),
-                        ),
-                      ),]),
-        Row(
-          children: [
-                      Consumer<DatosNotifier>(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Consumer<DatosNotifier>(
                         builder: (_, notifier, __) => Text(
-                          '${notifier.datosList[index].estado}',
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "OpenSans"),
-                        ),
-                      ), ]),
-        Row(
-        children: [
-                      Consumer<DatosNotifier>(
-                        builder: (_, notifier, __) => const Text(
-                          'Mensaje:',
+                          '${notifier.datosList[index].oid}',
                           style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "OpenSans"),
-                        ),
-                      ),]),
-                      Row(
-                          children: [
-                      Consumer<DatosNotifier>(
-                        builder: (_, notifier, __) => Text(
-                          '${notifier.datosList[index].contacto}',
-                          style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                               fontFamily: "OpenSans"),
                         ),
-                      ),
-                      ]),
-                      Row(
-                        children: [
-                          Consumer<DatosNotifier>(
+                      ),),
+                     //icono
+                     /* Consumer<DatosNotifier>(
+                        builder: (_, notifier, __) => Text(
+                          '',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "OpenSans"),
+                        ),
+                      ),*/
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 15),
+                         child: Consumer<DatosNotifier>(
                             builder: (_, notifier, __) => Text(
                               '${notifier.datosList[index].direccion}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w600,
                                   fontFamily: "OpenSans"),
                             ),
-                          ),
-                        ],
-                      )
+                      ),),
                     ],
                   ),
-                  ),
+                ),
+                SizedBox(width: 2),
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                         // margin: EdgeInsets.only(right: 10),
-                          color: Colors.blue,
+                          padding: const EdgeInsets.only(top: 8),
                           child: GestureDetector(
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_forward_ios_outlined,
                                 size: 20,
                               )
@@ -205,8 +147,6 @@ class _DatosListState extends State<DatosList> {
                     ],
                   ),
                 )
-
-
               ],
             ),
           ),

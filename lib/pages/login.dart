@@ -71,7 +71,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     insetPadding: EdgeInsets.all(10),
                     child: SingleChildScrollView(
                         child: Stack(
-                            overflow: Overflow.visible,
+                            //overflow: Overflow.visible,
                             alignment: Alignment.center,
                             children: <Widget>[
                               Container(
@@ -283,7 +283,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                                       insetPadding: EdgeInsets.all(10),
                                                       child: SingleChildScrollView(
                                                           child: Stack(
-                                                              overflow: Overflow.visible,
+                                                             // overflow: Overflow.visible,
                                                               alignment: Alignment.center,
                                                               children: <Widget>[
                                                                 Container(
