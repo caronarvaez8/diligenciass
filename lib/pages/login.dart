@@ -1,8 +1,5 @@
-
-
 import 'package:diligencias/colors.dart';
 import 'package:diligencias/models/user.dart';
-import 'package:diligencias/pages/connection.dart';
 import 'package:diligencias/pages/datos_list.dart';
 import 'package:diligencias/pages/home.dart';
 import 'package:diligencias/provider/datos_notifier.dart';
@@ -24,7 +21,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
-  bool _validate = false;
   bool _isHidden = false;
   @override
   void initState() {
@@ -38,10 +34,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     });
   }
 
-
-
   Future<List> login() async {
-  //  List<User> user = [];
     var aux;
     try {
       var uri = await http.post(Uri.parse(url1), body: {
@@ -52,18 +45,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       });
 
       aux = json.decode(uri.body);
-        //aux = User.fromJson(decoded);
-        //user.add(aux);
-      //print("estooooooo ${aux['msgError']}");
       if (aux['msgError']==null) {
-        print("youuuuuuu ${aux['msgError']}");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Home()),
         );
       }
         else if (aux['msgError']=='La clave digitada no coincide con la registrada' || aux['msgError'] =='Error al tratar de validar la clave' ){
-          print("dialogooooooo");
           setState(() {
             showDialog(
                 context: context,
@@ -71,7 +59,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     insetPadding: EdgeInsets.all(10),
                     child: SingleChildScrollView(
                         child: Stack(
-                            //overflow: Overflow.visible,
                             alignment: Alignment.center,
                             children: <Widget>[
                               Container(
@@ -79,7 +66,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                   height: 300,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(60),),
-
                                   padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
                                   child: Row(
                                       children: <Widget>[

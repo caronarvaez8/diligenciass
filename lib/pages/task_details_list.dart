@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:provider/provider.dart';
 
 String url2 = "https://www.su-web.net/controladores/funcionesGestioncci.php";
 
@@ -23,7 +22,6 @@ class TaskDetalisList extends StatefulWidget {
 class _TaskDetalisListState extends State<TaskDetalisList> {
 
   Widget build(BuildContext context) {
-    TaskDetailsNotifier taskdetails = Provider.of<TaskDetailsNotifier>(context);
     double widthApp = MediaQuery.of(context).size.width;
     double heightApp = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -299,10 +297,7 @@ Future<List<TaskDetails>> servicioDatosTask() async {
     if (uri.statusCode == 200) {
       Map<String, dynamic> decoded = Map<String, dynamic>.from(jsonDecode(uri.body));
       TaskDetails aux = TaskDetails.fromJson(decoded['infoRemite']);
-      print("valoresjj: ${decoded}");
-      print("valoresjj: ${decoded['infoDestino']}");
       taskdetails.add(aux);
-      print("chaooooooooooo ${aux.toMap().toString()}");
 
       return taskdetails;
     }  else {

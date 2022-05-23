@@ -1,4 +1,3 @@
-import 'package:diligencias/models/datos.dart';
 import 'package:diligencias/models/task_details.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -44,7 +43,6 @@ class TaskDetailsDBProvider {
     List<TaskDetails> list = maps.isNotEmpty
         ? maps.map((note) => TaskDetails.fromJsonDB(note)).toList()
         : [];
-    print("aquui ${list} ${maps[0]["nciudad"]}");
     return list;
   }
 }

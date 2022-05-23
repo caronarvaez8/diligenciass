@@ -1,7 +1,4 @@
-
-
 import 'dart:collection';
-import 'package:diligencias/main.dart';
 import 'package:diligencias/models/db.dart';
 import 'package:diligencias/models/user.dart';
 import 'package:diligencias/pages/login.dart';
@@ -17,7 +14,6 @@ class UserNotifier with ChangeNotifier {
     _userList.add(user);
     notifyListeners();
   }
-
 
   fetchWishList() {
     UserDBProvider.db.getUser().then((value) {

@@ -21,7 +21,6 @@ class DatosList extends StatefulWidget {
 class _DatosListState extends State<DatosList> {
 
   Widget build(BuildContext context) {
-    double widthApp = MediaQuery.of(context).size.width;
     DatosNotifier datosNotifier = Provider.of<DatosNotifier>(context);
     TaskDetailsNotifier taskdetailsNotifier = Provider.of<TaskDetailsNotifier>(context);
 
@@ -39,16 +38,11 @@ class _DatosListState extends State<DatosList> {
           child: InkWell(
             onTap: () async {
               servicioDatosTask();
-              //datosNotifier.listDatos();
-              //taskdetailsNotifier.listDatosTaskDetailsListUltFecha();
               taskdetailsNotifier.listDatosTaskDetailsList();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TaskDetalisList()),
               );
-             /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("El pdf está disponible en su directorio de descargas"),
-              ));*/
             },
             child: Row(
               children: <Widget>[
@@ -73,8 +67,8 @@ class _DatosListState extends State<DatosList> {
                       Container(
                           padding: const EdgeInsets.only(bottom: 15),
                           child: GestureDetector(
-                              child: Text("ENVIAR",
-                              style: const TextStyle(
+                              child: const Text("ENVIAR",
+                              style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w800,
                                   color: Colors.black26
@@ -91,7 +85,7 @@ class _DatosListState extends State<DatosList> {
                       Container(
                         padding: const EdgeInsets.only(top: 15),
                         child:  Consumer<DatosNotifier>(
-                          builder: (_, notifier, __) => Text(
+                          builder: (_, notifier, __) => const Text(
                             'Número radicado:',
                             style: TextStyle(
                                 fontSize: 16,
@@ -106,29 +100,18 @@ class _DatosListState extends State<DatosList> {
                         child: Consumer<DatosNotifier>(
                         builder: (_, notifier, __) => Text(
                           '${notifier.datosList[index].oid}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               fontFamily: "OpenSans"),
                         ),
                       ),),
-                     //icono
-                     /* Consumer<DatosNotifier>(
-                        builder: (_, notifier, __) => Text(
-                          '',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "OpenSans"),
-                        ),
-                      ),*/
                       Container(
                         padding: const EdgeInsets.only(bottom: 15),
                          child: Consumer<DatosNotifier>(
                             builder: (_, notifier, __) => Text(
                               '${notifier.datosList[index].direccion}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: "OpenSans"),
@@ -137,7 +120,7 @@ class _DatosListState extends State<DatosList> {
                     ],
                   ),
                 ),
-                SizedBox(width: 2),
+                const SizedBox(width: 2),
                 Expanded(
                   child: Column(
                     children: [
@@ -157,9 +140,7 @@ class _DatosListState extends State<DatosList> {
             ),
           ),
         ),
-
     );
-
   }
 
 }
@@ -179,7 +160,6 @@ Future<List<Datos>> servicioDatos() async {
       for (var i = 0; i < decoded['listaDiligencias'].length; i++) {
         Datos aux = Datos.fromJson(decoded['listaDiligencias'][i]);
         datos.add(aux);
-        print("holaaaaaa yooooooooo ${aux.toMap().toString()}");
       }
       return datos;
     } else {

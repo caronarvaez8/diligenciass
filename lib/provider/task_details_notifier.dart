@@ -86,5 +86,4 @@ class TaskDetailsNotifier with ChangeNotifier {
     fetchWishList();
   }
 
-
 }

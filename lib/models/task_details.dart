@@ -1,5 +1,3 @@
-
-
 class TaskDetails {
   String? tipo;
   String? remitente;
